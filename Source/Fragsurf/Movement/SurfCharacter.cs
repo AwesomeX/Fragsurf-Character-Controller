@@ -179,7 +179,10 @@ namespace Fragsurf.Movement
             var moveRight = Input.GetKey(MoveRight);
             var moveFwd = Input.GetKey(MoveForward);
             var moveBack = Input.GetKey(MoveBack);
-            var jump = Input.GetKey(JumpButton);
+
+			float mouseWheelAxis = Mathf.Abs(Input.GetAxisRaw("Mouse ScrollWheel"));
+            _wishJumpScroll = Mathf.Clamp(Mathf.Lerp(0, _wishJumpScroll+mouseWheelAxis*20f, 0.5f), 0f, 2f);
+            var jump = Input.GetKey(JumpButton) || _wishJumpScroll >= 0.04f || mouseWheelAxis >= 0.05f;
 
             if (!moveLeft && !moveRight)
                 _moveData.SideMove = 0;
@@ -195,6 +198,8 @@ namespace Fragsurf.Movement
             else if (moveBack)
                 _moveData.ForwardMove = -MoveConfig.Accel;
 
+			if(_wishJumpScroll >= 0f)
+                _wishJumpScroll -= Time.deltaTime*0.5f;
             if (jump)
                 _moveData.Buttons = _moveData.Buttons.AddFlag((int)InputButtons.Jump);
             else
