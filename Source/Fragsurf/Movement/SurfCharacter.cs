@@ -44,6 +44,7 @@ namespace Fragsurf.Movement
         private Collider _collider;
         private Vector3 _angles;
         private Vector3 _startPosition;
+		private float _wishJumpScroll;
 
         private MoveData _moveData = new MoveData();
         private SurfController _controller = new SurfController();
